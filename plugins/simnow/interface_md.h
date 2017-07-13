@@ -49,6 +49,7 @@ public:
 private:
   void CreateFtdcMdApi(const std::string& path);
   void RegisterFront(const std::string& addresss);
+  void SetTask(void* data, size_t data_length);
 private:
   CThostFtdcMdApi* md_api_;
   struct server*  srv_;

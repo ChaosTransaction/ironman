@@ -4,6 +4,7 @@
 #include"simnow/interface_md.h"
 #include "basic/radom_in.h"
 #include "logic/logic_comm.h"
+#include "protocol/data_packet.h"
 namespace simnow_logic{
 
 SimNowMDAPI::~SimNowMDAPI() {
@@ -74,7 +75,8 @@ void SimNowMDAPI::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMar
 void SimNowMDAPI::OnRspUserLogin(CThostFtdcRspUserLoginField *user_login,
                              CThostFtdcRspInfoField *rsp_info,
                              int request_id, bool is_last) {
-     LOG_DEBUG2("OnRspUserLogin successs nRequestID %d\n", request_id);
+  LOG_DEBUG2("OnRspUserLogin successs nRequestID %d\n", request_id);
+  SetTask((void*)(user_login),sizeof(CThostFtdcRspUserLoginField));
 }
 
 void SimNowMDAPI::OnFrontConnected(){ //连接成功
@@ -87,5 +89,14 @@ void SimNowMDAPI::OnFrontDisconnected(int reason) {
     LOG_DEBUG("disconnected");
 }
 
+void SimNowMDAPI::SetTask(void* data, size_t data_length) {
+    //sleep(10);
+    int32 packet_length = data_length + sizeof(int16);
+    packet::DataOutPacket out(false, packet_length);
+    out.Write16(packet_length);
+    out.WriteData(const_cast<const char*>(reinterpret_cast<char *>(data)),data_length);
+    srv_->set_event_task(srv_,reinterpret_cast<void *>(const_cast<char *>(out.GetData())),
+                        packet_length);
+}
 
 }
