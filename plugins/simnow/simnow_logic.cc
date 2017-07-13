@@ -44,15 +44,21 @@ bool SimNowlogic::Init()
   //  md_api_->Init(spath, sddress);
 
 
+    std::string t_broker_id = "9999";
+    std::string t_inverstor_id = "096960";
+    std::string t_password = "kerry0903";
     std::string tpath;
     std::string tddress = "tcp://180.168.146.187:10001";
     trader_api_ = new simnow_logic::SimNowTraderAPI();
     trader_api_->Init(tpath, tddress);
+    trader_api_->SetUserInfo(t_broker_id, t_inverstor_id, t_password);
     return true;
+
 }
 
 void SimNowlogic::InitSrv(struct server* srv) {
-  md_api_->Init(srv);
+  //md_api_->Init(srv);
+    trader_api_->Init(srv);
 }
 
 SimNowlogic *SimNowlogic::GetInstance()

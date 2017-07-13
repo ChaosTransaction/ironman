@@ -10,7 +10,7 @@
 #include "core/common.h"
 namespace simnow_logic {
 
-class SimNowTraderAPI : public CThostFtdcMdSpi {
+class SimNowTraderAPI : public CThostFtdcTraderSpi {
 public:
   SimNowTraderAPI() {}
   ~SimNowTraderAPI();

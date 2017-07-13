@@ -1,7 +1,8 @@
 //  Copyright (c) 2015-2015 The quotations Authors. All rights reserved.
 //  Created on: 2017年1月8日 Author: kerry
 
-#include"simnow/interface_md.h"
+#include"simnow/interface_trader.h"
+#include "basic/basic_util.h"
 #include "basic/radom_in.h"
 #include "logic/logic_comm.h"
 #include "protocol/data_packet.h"
@@ -16,7 +17,7 @@ SimNowTraderAPI::~SimNowTraderAPI() {
 void SimNowTraderAPI::Init(const std::string& path,
                        const std::string& address) {
 
-  CreateFtdcMdApi(path);
+  CreateFtdcTraderApi(path);
   trader_api_->SubscribePrivateTopic(THOST_TERT_RESUME);
   trader_api_->SubscribePublicTopic(THOST_TERT_RESUME);
   RegisterFront(address);
@@ -50,7 +51,7 @@ void SimNowTraderAPI::ReqQryInstrument() {
   struct CThostFtdcQryInstrumentField qry_instrument;
   int request_id = base::SysRadom::GetInstance()->GetRandomIntID();
   memset(&qry_instrument, 0, sizeof(qry_instrument));
-  return trader_api_->ReqQryInstrument(&qry_instrument,request_id);
+  trader_api_->ReqQryInstrument(&qry_instrument,request_id);
 }
 
 void SimNowTraderAPI::UserLogin() {
@@ -81,20 +82,21 @@ void SimNowTraderAPI::OnRspUserLogin(CThostFtdcRspUserLoginField *rsp_user_login
 }
 
 
-void SimNowTraderAPI::OnRspQryExchange(CThostFtdcInstrumentField *instrument,
+void SimNowTraderAPI::OnRspQryInstrument(CThostFtdcInstrumentField *instrument,
                               CThostFtdcRspInfoField *rsp_info,
                               int request_id, bool is_last) {
-    char* input = instrument->InstrumentName;
+    /*char* input = instrument->InstrumentName;
     char* output = NULL;
     size_t outlen = 0;
     base::BasicUtil::CharracterSetConv("UTF-8", input, strlen(input),
                                       "gbk", &output, &outlen);
 
     LOG_DEBUG2("QryInstrument nRequestID:%d InstrumentID:%s ExchangeID:%s InstrumentName:%s  ExchangeInstID:%s ProductID:%s",
-                nRequestID,instrument->InstrumentID,instrument->ExchangeID,
+                request_id,instrument->InstrumentID,instrument->ExchangeID,
                 output,instrument->ExchangeInstID,
                 instrument->ProductID);
-    if (output) {delete output; output = NULL;}
+    if (output) {delete output; output = NULL;}*/
+    SetTask((void*)(instrument), sizeof(struct CThostFtdcQryInstrumentField));
 }
 
 
