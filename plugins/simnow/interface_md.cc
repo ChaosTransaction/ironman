@@ -89,7 +89,7 @@ void SimNowMDAPI::OnFrontDisconnected(int reason) {
     LOG_DEBUG("disconnected");
 }
 
-void SimNowMDAPI::SetTask(void* data, size_t data_length) {
+void SimNowMDAPI::SetTask(int code, void* data, size_t data_length) {
     //sleep(10);
     int32 packet_length = data_length + sizeof(int16);
     packet::DataOutPacket out(false, packet_length);

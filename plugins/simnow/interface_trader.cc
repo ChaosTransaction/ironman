@@ -78,7 +78,9 @@ void SimNowTraderAPI::OnFrontDisconnected(int reason) {
 void SimNowTraderAPI::OnRspUserLogin(CThostFtdcRspUserLoginField *rsp_user_login,
                                 CThostFtdcRspInfoField *rsp_info,
                                 int request_id, bool is_last) {
-     ReqQryInstrument();
+    SetTask(TRADER_USER_LOGIN, (void*)(rsp_user_login),
+           sizeof(CThostFtdcRspUserLoginField)); 
+    //ReqQryInstrument();
 }
 
 
@@ -96,16 +98,17 @@ void SimNowTraderAPI::OnRspQryInstrument(CThostFtdcInstrumentField *instrument,
                 output,instrument->ExchangeInstID,
                 instrument->ProductID);
     if (output) {delete output; output = NULL;}*/
-    SetTask((void*)(instrument), sizeof(struct CThostFtdcQryInstrumentField));
+    SetTask(QRY_INSTRUMENT, (void*)(instrument), sizeof(struct CThostFtdcQryInstrumentField));
 }
 
 
 
-void SimNowTraderAPI::SetTask(void* data, size_t data_length) {
+void SimNowTraderAPI::SetTask(int16 code, void* data, size_t data_length) {
     //sleep(10);
-    int32 packet_length = data_length + sizeof(int16);
+    int32 packet_length = data_length + sizeof(int16) + sizeof(int16);
     packet::DataOutPacket out(false, packet_length);
     out.Write16(packet_length);
+    out.Write16(code);
     out.WriteData(const_cast<const char*>(reinterpret_cast<char *>(data)),data_length);
     srv_->set_event_task(srv_,reinterpret_cast<void *>(const_cast<char *>(out.GetData())),
                         packet_length);

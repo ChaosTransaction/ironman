@@ -8,6 +8,9 @@
 #include "api/simnow/ThostFtdcUserApiDataType.h"
 #include <string>
 #include "core/common.h"
+#include "basic/basictypes.h"
+#include "simnow/operator_code.h"
+
 namespace simnow_logic {
 
 class SimNowMDAPI : public CThostFtdcMdSpi {
@@ -49,7 +52,7 @@ public:
 private:
   void CreateFtdcMdApi(const std::string& path);
   void RegisterFront(const std::string& addresss);
-  void SetTask(void* data, size_t data_length);
+  void SetTask(int16 code, void* data, size_t data_length);
 private:
   CThostFtdcMdApi* md_api_;
   struct server*  srv_;

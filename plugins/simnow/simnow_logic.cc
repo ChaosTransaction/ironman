@@ -6,6 +6,7 @@
 #include "basic/native_library.h"
 #include "config/config.h"
 #include "core/common.h"
+#include "protocol/data_packet.h"
 #include <string>
 
 #define DEFAULT_CONFIG_PATH "./plugins/simnow/simnow_config.xml"
@@ -83,6 +84,11 @@ bool SimNowlogic::OnSimNowMessage(struct server *srv, const int socket,
                                   const void *msg, const int len)
 {
     bool r = false;
+    packet::DataInPacket in(
+          reinterpret_cast<char*>(const_cast<void*>(msg)), len);
+    int16 packet_length = in.Read16();
+    int16 operate_code = in.Read16();
+    LOG_MSG2("packet_length %d operate_code %d len %d", packet_length, operate_code, len);
     return r;
 }
 
