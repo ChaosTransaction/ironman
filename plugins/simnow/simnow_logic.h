@@ -7,6 +7,7 @@
 #include "basic/basictypes.h"
 #include "core/common.h"
 #include "simnow/interface_md.h"
+#include "simnow/interface_trader.h"
 
 namespace simnow_logic {
 
@@ -48,6 +49,7 @@ private:
     bool Init();
 private:
     simnow_logic::SimNowMDAPI*  md_api_;
+    simnow_logic::SimNowTraderAPI* trader_api_;
 };
 } // namespace simnow_logic
 

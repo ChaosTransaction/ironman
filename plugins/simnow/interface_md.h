@@ -1,8 +1,8 @@
 //  Copyright (c) 2017-2018 The SIMNOW Authors. All rights reserved.
 //  Created on: 2017年7月13日 Author: kerry
 
-#ifndef INTERFACE_INTERFACE_MGR_H_
-#define INTERFACE_INTERFACE_MGR_H_
+#ifndef SIMNOW_INTERFACE_MD_H_
+#define SIMNOW_INTERFACE_MD_H_
 #include "api/simnow/ThostFtdcMdApi.h"
 #include "api/simnow/ThostFtdcUserApiStruct.h"
 #include "api/simnow/ThostFtdcUserApiDataType.h"
@@ -43,7 +43,7 @@ public:
             const std::string& address);
 
   void UserLogin();
-  
+
   void SetUserInfo(const std::string& user_id, const std::string& password,
   const std::string& broker_id);
 private:

@@ -15,13 +15,15 @@ namespace simnow_logic{
 SimNowlogic *SimNowlogic::instance_ = NULL;
 
 SimNowlogic::SimNowlogic()
-:md_api_(NULL){
+:md_api_(NULL)
+,trader_api_(NULL){
     if (!Init())
         assert(0);
 }
 
 SimNowlogic::~SimNowlogic(){
   if (md_api_){delete md_api_;md_api_ = NULL;}
+  if (trader_api_) {delete trader_api_; trader_api_ = NULL;}
 }
 
 
@@ -34,12 +36,18 @@ bool SimNowlogic::Init()
         return false;
 
     std::string spath;
-    std::string address = "tcp://180.168.146.187:10011";
+    std::string sddress = "tcp://180.168.146.187:10011";
     r = config->LoadConfig(path);
     LOG_MSG2("path : %s", path.c_str());
 
-    md_api_ = new simnow_logic::SimNowMDAPI();
-    md_api_->Init(spath, address);
+    //md_api_ = new simnow_logic::SimNowMDAPI();
+  //  md_api_->Init(spath, sddress);
+
+
+    std::string tpath;
+    std::string tddress = "tcp://180.168.146.187:10001";
+    trader_api_ = new simnow_logic::SimNowTraderAPI();
+    trader_api_->Init(tpath, tddress);
     return true;
 }
 
