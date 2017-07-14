@@ -24,7 +24,7 @@ LINK_PATHS = -L./ -L/usr/local/libmemcached-1.0.7/lib/  -L/usr/lib64/mysql
 CPPFLAGS += -isystem -shared -fPIC -D_DB_POOL_ -D_DEBUG -DUSR_LOG_MSG\
 	-D_DIC_POOL_ -D_REENTRANT -D_GNU_SOURCE -DUSR_LOG_ERROR -DUSR_LOG_MSG\
 	-DPIPE_WORK -DHEAD_SHORT -Wall
-	
+
 #CPPFLAGS += -isystem -shared -fPIC -D_DB_POOL_\
 	-D_DIC_POOL_ -D_REENTRANT -D_GNU_SOURCE -DUSR_LOG_ERROR -DUSR_LOG_MSG\
 	-DNET_WORK -DHEAD_SHORT
@@ -36,7 +36,7 @@ CXXFLAGS += -g  -Wextra -pthread -shared -fPIC
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
 PLUGIN = $(SO_DIR)/simnow/simnow.so
-                
+
 INCLUDE_PATHS = -I/usr/local/libmemcached-1.0.7/include \
 				-I$(LIB_DIR)/BasicCore \
 				-I$(THIRD_PATH)\
@@ -49,7 +49,7 @@ INCLUDE_PATHS = -I/usr/local/libmemcached-1.0.7/include \
 				-I$(LIB_DIR)/mylib/base\
 				-I../\
 				-I../../\
-				
+
 
 
 # House-keeping build targets.
@@ -97,6 +97,12 @@ simnow_logic.o : ./simnow_logic.cc ./simnow_logic.h
 
 interface_md.o : ./interface_md.cc ./interface_md.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./interface_md.cc $(INCLUDE_PATHS)
+
+interface_trader.o : ./interface_trader.cc ./interface_trader.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./interface_trader.cc $(INCLUDE_PATHS)
+
+interface_trader.o : ./interface_trader.cc ./interface_trader.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./interface_trader.cc $(INCLUDE_PATHS)
 
 interface_trader.o : ./interface_trader.cc ./interface_trader.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./interface_trader.cc $(INCLUDE_PATHS)

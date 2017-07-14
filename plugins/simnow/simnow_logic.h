@@ -8,6 +8,7 @@
 #include "core/common.h"
 #include "simnow/interface_md.h"
 #include "simnow/interface_trader.h"
+#include "simnow/simnow_info"
 
 namespace simnow_logic {
 
@@ -47,6 +48,7 @@ public:
 
 private:
     bool Init();
+    bool ParserCustomXml(const std::string& file, SimNowConfig& config);
 private:
     simnow_logic::SimNowMDAPI*  md_api_;
     simnow_logic::SimNowTraderAPI* trader_api_;

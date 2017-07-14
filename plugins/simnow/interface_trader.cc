@@ -80,7 +80,6 @@ void SimNowTraderAPI::OnRspUserLogin(CThostFtdcRspUserLoginField *rsp_user_login
                                 int request_id, bool is_last) {
     SetTask(TRADER_USER_LOGIN, (void*)(rsp_user_login),
            sizeof(CThostFtdcRspUserLoginField)); 
-    //ReqQryInstrument();
 }
 
 
