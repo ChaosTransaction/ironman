@@ -3,7 +3,9 @@
 
 #ifndef SIMNOW_SIMNOW_INFOS_H_
 #define SIMNOW_SIMNOW_INFOS_H_
+#pragma once
 
+#include <string>
 namespace simnow_logic {
 
 struct MDUserInfo {
@@ -33,7 +35,7 @@ public:
         data_->md_userinfo_.password_ = password;
         data_->md_userinfo_.broker_id_ = broker_id;
         data_->md_userinfo_.address_ = address;
-        data_->md_userinfo_.path = path;
+        data_->md_userinfo_.path_ = path;
   }
 
   std::string& md_user_id() const {
@@ -76,5 +78,7 @@ private:
   };
   Data* data_;
 };
+
+
 }
 #endif

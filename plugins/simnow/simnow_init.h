@@ -3,6 +3,7 @@
 
 #ifndef IRONMAN_SIMNOW_SIMNOW_INIT_
 #define IRONMAN_SIMNOW_SIMNOW_INIT_
+#pragma once
 #ifdef __cplusplus
 extern "C" {
 #endif

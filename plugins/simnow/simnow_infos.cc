@@ -1,7 +1,7 @@
 //  Copyright (c) 2017-2018 The quotations Authors. All rights reserved.
 //  Created on: 2017年7月13日 Author: kerry
 
-#include "simnow/simnow_info.h"
+#include "simnow/simnow_infos.h"
 namespace simnow_logic {
 
 SimNowConfig::SimNowConfig() {

@@ -101,13 +101,10 @@ interface_md.o : ./interface_md.cc ./interface_md.h
 interface_trader.o : ./interface_trader.cc ./interface_trader.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./interface_trader.cc $(INCLUDE_PATHS)
 
-interface_trader.o : ./interface_trader.cc ./interface_trader.h
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./interface_trader.cc $(INCLUDE_PATHS)
+simnow_infos.o : ./simnow_infos.cc ./simnow_infos.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./simnow_infos.cc $(INCLUDE_PATHS)
 
-interface_trader.o : ./interface_trader.cc ./interface_trader.h
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./interface_trader.cc $(INCLUDE_PATHS)
-
-$(PLUGIN) : simnow_init.o simnow_logic.o interface_trader.o\
+$(PLUGIN) : simnow_init.o simnow_logic.o interface_md.o interface_trader.o simnow_infos.o\
 	$(LIB_DIR)/mylib/base/lib/mybase.a /usr/local/lib/thosttraderapi.so /usr/local/lib/thostmduserapi.so
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LINK_PATHS) -liconv -lpthread -lexpat -lrt -ldl \
 	$^ -o $@

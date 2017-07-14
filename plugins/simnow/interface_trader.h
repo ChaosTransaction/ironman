@@ -3,6 +3,8 @@
 
 #ifndef SIMNOW_INTERFACE_TRADER_H_
 #define SIMNOW_INTERFACE_TRADER_H_
+#pragma once
+
 #include "api/simnow/ThostFtdcTraderApi.h"
 #include "api/simnow/ThostFtdcUserApiStruct.h"
 #include "api/simnow/ThostFtdcUserApiDataType.h"
@@ -43,7 +45,7 @@ private:
   void CreateFtdcTraderApi(const std::string& path);
   void RegisterFront(const std::string& addresss);
   void ReqQryInstrument();
-  void SetTask(int16 code, void* data, size_t data_length);
+  void SetTask(int16 code, int32 request_id, void* data, size_t data_length);
 private:
   CThostFtdcTraderApi* trader_api_;
   struct server*  srv_;

@@ -3,6 +3,8 @@
 
 #ifndef SIMNOW_INTERFACE_MD_H_
 #define SIMNOW_INTERFACE_MD_H_
+#pragma once
+
 #include "api/simnow/ThostFtdcMdApi.h"
 #include "api/simnow/ThostFtdcUserApiStruct.h"
 #include "api/simnow/ThostFtdcUserApiDataType.h"
@@ -48,11 +50,14 @@ public:
   void UserLogin();
 
   void SetUserInfo(const std::string& user_id, const std::string& password,
-  const std::string& broker_id);
+                const std::string& broker_id);
+
+  void SubScribeMarketData(char** instrument_id, int32 num);
+
 private:
   void CreateFtdcMdApi(const std::string& path);
   void RegisterFront(const std::string& addresss);
-  void SetTask(int16 code, void* data, size_t data_length);
+  void SetTask(int16 code, int32 request_id, void* data, size_t data_length);
 private:
   CThostFtdcMdApi* md_api_;
   struct server*  srv_;
