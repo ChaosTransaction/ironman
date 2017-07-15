@@ -7,6 +7,9 @@
 #include "basic/basictypes.h"
 #include "core/common.h"
 #include "simnow/interface_md.h"
+#include "simnow/interface_trader.h"
+#include "simnow/simnow_infos.h"
+#pragma once
 
 namespace simnow_logic {
 
@@ -46,8 +49,17 @@ public:
 
 private:
     bool Init();
+    bool ParserCustomXml(const std::string& file, simnow_logic::SimNowConfig& config);
+
+private:
+    bool OnMDConnect(const char* data, const int len);
+    bool OnUserLogin(int32 request_id, const char* data, const int len);
+    bool OnMarkertData(int32 request_id, const char* data, const int len);
+    bool OnSubMarketData(int32 request_id, const char* data, const int len);
+    bool OnTraderInstrument(int32 request_id, const char* data, const int len);
 private:
     simnow_logic::SimNowMDAPI*  md_api_;
+    simnow_logic::SimNowTraderAPI* trader_api_;
 };
 } // namespace simnow_logic
 
