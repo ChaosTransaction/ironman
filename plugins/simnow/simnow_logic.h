@@ -56,6 +56,7 @@ private:
     bool OnUserLogin(int32 request_id, const char* data, const int len);
     bool OnMarkertData(int32 request_id, const char* data, const int len);
     bool OnSubMarketData(int32 request_id, const char* data, const int len);
+    bool OnTraderInstrument(int32 request_id, const char* data, const int len);
 private:
     simnow_logic::SimNowMDAPI*  md_api_;
     simnow_logic::SimNowTraderAPI* trader_api_;

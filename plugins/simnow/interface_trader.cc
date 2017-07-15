@@ -37,7 +37,8 @@ void SimNowTraderAPI::SetUserInfo(const std::string& broker_id,
 }
 
 void SimNowTraderAPI::CreateFtdcTraderApi(const std::string& path) {
-  trader_api_ = CThostFtdcTraderApi::CreateFtdcTraderApi(path.c_str());
+  trader_api_ = 
+        CThostFtdcTraderApi::CreateFtdcTraderApi(path.c_str());
   trader_api_->RegisterSpi(this);
 }
 
@@ -78,14 +79,18 @@ void SimNowTraderAPI::OnFrontDisconnected(int reason) {
 void SimNowTraderAPI::OnRspUserLogin(CThostFtdcRspUserLoginField *rsp_user_login,
                                 CThostFtdcRspInfoField *rsp_info,
                                 int request_id, bool is_last) {
-    SetTask(TRADER_USER_LOGIN, request_id, (void*)(rsp_user_login),
-           sizeof(CThostFtdcRspUserLoginField)); 
+    LOG_DEBUG2("==========> request_id %d", request_id);
+    ReqQryInstrument();
+    //SetTask(TRADER_USER_LOGIN, request_id, (void*)(rsp_user_login),
+      //     sizeof(CThostFtdcRspUserLoginField)); 
 }
 
 
 void SimNowTraderAPI::OnRspQryInstrument(CThostFtdcInstrumentField *instrument,
                               CThostFtdcRspInfoField *rsp_info,
                               int request_id, bool is_last) {
+    
+    //LOG_DEBUG2("==========> request_id %d", request_id);
     /*char* input = instrument->InstrumentName;
     char* output = NULL;
     size_t outlen = 0;
@@ -97,8 +102,8 @@ void SimNowTraderAPI::OnRspQryInstrument(CThostFtdcInstrumentField *instrument,
                 output,instrument->ExchangeInstID,
                 instrument->ProductID);
     if (output) {delete output; output = NULL;}*/
-    SetTask(QRY_INSTRUMENT, request_id, (void*)(instrument), 
-            sizeof(struct CThostFtdcQryInstrumentField));
+    SetTask(QRY_INSTRUMENT, request_id, (void*)(instrument),
+                sizeof(struct CThostFtdcQryInstrumentField));
 }
 
 

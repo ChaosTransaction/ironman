@@ -101,7 +101,7 @@ void SimNowMDAPI::SetTask(int16 code, int32 request_id, void* data, size_t data_
     out.Write16(packet_length);
     out.Write16(code);
     out.Write32(request_id);
-    //if (data != NULL && data_length == 0)
+    if (data_length == 0)
         out.WriteData(const_cast<const char*>(reinterpret_cast<char *>(data)),data_length);
     srv_->set_event_task(srv_,reinterpret_cast<void *>(const_cast<char *>(out.GetData())),
                         packet_length);

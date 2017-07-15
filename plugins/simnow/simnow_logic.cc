@@ -4,6 +4,7 @@
 #include "simnow/simnow_logic.h"
 #include "logic/logic_comm.h"
 #include "basic/native_library.h"
+#include "basic/basic_util.h"
 #include "config/config.h"
 #include "core/common.h"
 #include "logic/xml_parser.h"
@@ -41,8 +42,8 @@ SimNowlogic::SimNowlogic()
 }
 
 SimNowlogic::~SimNowlogic(){
-  if (md_api_){delete md_api_;md_api_ = NULL;}
-  if (trader_api_) {delete trader_api_; trader_api_ = NULL;}
+   if (md_api_){delete md_api_;md_api_ = NULL;}
+   //if (trader_api_) {delete trader_api_; trader_api_ = NULL;}
 }
 
 
@@ -62,18 +63,11 @@ bool SimNowlogic::Init()
     if (!r)
       return false;
 
-
-
-    //std::string spath;
-    //std::string sddress = "tcp://180.168.146.187:10011";
-
     md_api_ = new simnow_logic::SimNowMDAPI();
     md_api_->Init(simnow_config.md_path(), simnow_config.md_address());
     md_api_->SetUserInfo(simnow_config.md_user_id(),
                           simnow_config.md_password(),
                           simnow_config.md_broker_id());
-
-    //md_api_->UserLogin();
 
     /*std::string t_broker_id = "9999";
     std::string t_inverstor_id = "096960";
@@ -125,22 +119,26 @@ bool SimNowlogic::OnSimNowMessage(struct server *srv, const int socket,
 
     int32 body_length = packet_length - 8;
     int32 temp = 0;
-    const char* t = in.ReadData(body_length,temp);
+    const char* body  = in.ReadData(body_length,temp);
     switch (operate_code) {
         case MD_USER_CONNECTED : {
             OnMDConnect(NULL,0);
             break;
         }
         case MD_USER_LOGIN : {
-            OnUserLogin(request_id, t, temp);
+            OnUserLogin(request_id, body, temp);
             break;
         }
         case MD_MARKET_DATA: {
-            OnMarkertData(request_id, t, temp);
+            OnMarkertData(request_id, body, temp);
             break;
         }
         case MD_SCRIBE_MARKET_DATA: {
-            OnSubMarketData(request_id, t, temp);
+            OnSubMarketData(request_id, body, temp);
+            break;
+        }
+        case QRY_INSTRUMENT: {
+            OnTraderInstrument(request_id, body, temp);
             break;
         }
         default:
@@ -219,6 +217,22 @@ bool SimNowlogic::OnSubMarketData(int32 request_id, const char* data,
     LOG_DEBUG2("request id %d Instrument id %s", request_id,
                instrument->InstrumentID);
     return true;
+}
+
+bool SimNowlogic::OnTraderInstrument(int32 request_id, const char* data, const int len) {
+    CThostFtdcInstrumentField* instrument = (CThostFtdcInstrumentField*)(data);
+
+    char* input = instrument->InstrumentName;
+    char* output = NULL;
+    size_t outlen = 0;
+    base::BasicUtil::CharracterSetConv("UTF-8", input, strlen(input),
+                                      "gbk", &output, &outlen);
+
+    LOG_DEBUG2("QryInstrument nRequestID:%d InstrumentID:%s ExchangeID:%s InstrumentName:%s  ExchangeInstID:%s ProductID:%s",
+                request_id,instrument->InstrumentID,instrument->ExchangeID,
+                output,instrument->ExchangeInstID,
+                instrument->ProductID);
+    if (output) {delete output; output = NULL;}
 }
 
 bool SimNowlogic::ParserCustomXml(const std::string& file, simnow_logic::SimNowConfig& config) {
